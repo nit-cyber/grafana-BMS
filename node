@@ -1,0 +1,38 @@
+'use strict';
+const fs = require('fs');
+const assert = require('assert');
+
+/* Create a new file and write initial content. */
+
+fs.writeFileSync('/tmp/example', 'Node.js');
+
+/* Read and verify the initial content. */
+
+assert.deepStrictEqual(fs.readFileSync('/tmp/example').toString(), 'Node.js');
+
+/* Overwrite the file with new content. */
+
+fs.writeFileSync('/tmp/example', 'JavaScript');
+assert.deepStrictEqual(fs.readFileSync('/tmp/example').toString(), 'JavaScript');
+
+/* Append additional content to the file. */
+
+fs.appendFileSync('/tmp/example', ' is awesome!');
+assert.deepStrictEqual(fs.readFileSync('/tmp/example').toString(), 'JavaScript is awesome!');
+
+/* Open the file with a file descriptor in append mode. */
+
+const fd = fs.openSync('/tmp/example', 'a');
+
+/* Write more content using the file descriptor. */
+
+fs.writeSync(fd, ' Let\'s code!');
+assert.deepStrictEqual(fs.readFileSync('/tmp/example').toString(), 'JavaScript is awesome! Let\'s code!');
+
+/* Close the file descriptor. */
+
+fs.closeSync(fd);
+
+/* Confirm final content. */
+
+console.log('Final file content:', fs.readFileSync('/tmp/example').toString());
